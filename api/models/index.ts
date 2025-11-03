@@ -1,0 +1,1 @@
+export { Product, ProductsResponse, CreateProductRequest, UpdateProductRequest, PartialUpdateProductRequest } from './product.model';
