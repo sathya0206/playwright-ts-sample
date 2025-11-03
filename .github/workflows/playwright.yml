@@ -10,15 +10,44 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+
     - uses: actions/setup-node@v4
       with:
-        node-version: lts/*
+          node-version: '22.14'
+
     - name: Install dependencies
       run: npm ci
+
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+
     - name: Run Playwright tests
       run: npx playwright test
+      env:
+        # UI Configuration
+        UI_BASE_URL: https://automationexercise.com
+        UI_TIMEOUT: 30000
+        
+        # API Configuration
+        API_BASE_URL: https://fakestoreapi.com
+        API_TIMEOUT: 10000
+        
+        # Test User Credentials (from GitHub Secrets)
+        TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+        TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+        
+        # Browser Configuration
+        HEADLESS: true
+        SLOW_MO: 0
+        
+        # Reporting
+        SCREENSHOT_ON_FAILURE: true
+        VIDEO_ON_FAILURE: true
+        TRACE_ON_FAILURE: true
+        
+        # Logging
+        LOG_LEVEL: info
+
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
